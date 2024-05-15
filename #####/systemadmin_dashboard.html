@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .navbar {
+            background-color: #525252;
+            padding-bottom: 20px;
+            padding-top: 9px;
+            color: white;
+            position: fixed;
+            width: 100%;
+            height: 25px;
+            left: 0;
+            z-index: 2;
+            transition: left 0.5s;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding-bottom: 10;
+        }
+
+        .side-panel {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            background-color: #525252;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            transition: 0.5s;
+            color: white;
+        }
+
+        .side-panel a {
+            padding: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            color: white;
+            display: flex;
+            margin-left: 8px;
+            margin-bottom: 15px;
+        }
+
+        .side-panel a:hover {
+            border: 2px solid whitesmoke;
+        }
+
+        .dashboard-container {
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color: #ffffff;
+            position: fixed;
+            top: 60px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            overflow: auto;
+            transition: margin-left 0.5s;
+        }
+
+        p {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar" id="navbar">
+    <span style="font-size:30px;cursor:pointer;border: 1px solid #ffffff;padding: 5px;float:left" class="fas fa-bars"
+          onclick="toggleSidePanel()"></span>
+    <a href="#">Xyz</a>
+    <a href="#">
+        <span style="font-size:30px;cursor:pointer;padding: 5px ; margin-left:20px" class="fas fa-cogs"></span>
+    </a>
+</div>
+
+<div class="side-panel" id="sidePanel">
+    <p><b>System Admin Panel</b></p>
+    <a href="#"><i class="fas fa-user" style="margin-right: 8px;"></i> My Profile</a>
+    <a href="#"><i class="fas fa-chart-bar" style="margin-right: 8px;"></i> Dashboard</a>
+
+    <a href="#">
+        <i class="fas fa-book" style="margin-right: 8px;"></i> Manage Books
+        <i class="fas fa-chevron-right" style="margin-left: 15px;"></i>
+    </a>
+    <a href="#" style="padding-left: 30px;"><i class="fas fa-plus" style="margin-right: 8px;"></i> Add Books</a>
+    <a href="#" style="padding-left: 30px;"><i class="fas fa-trash" style="margin-right: 8px;"></i> Delete Books</a>
+
+    <a href="#"><i class="fas fa-eye" style="margin-right: 8px;"></i> View Courses</a>
+
+    <a href="#">
+        <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i>
+        Log out
+    </a>
+</div>
+
+<div class="dashboard-container">
+    <h1>Welcome to the System Admin Dashboard</h1>
+    <p>This is your dashboard content, displaying key system statistics and activities.</p>
+</div>
+
+<script>
+    function toggleSidePanel() {
+        var sidePanel = document.getElementById('sidePanel');
+        var navbar = document.getElementById('navbar');
+        var dashboardContainer = document.querySelector('.dashboard-container');
+
+        if (sidePanel.style.width === '200px') {
+            sidePanel.style.width = '0';
+            dashboardContainer.style.marginLeft = '0';
+            navbar.style.left = '0';
+        } else {
+            sidePanel.style.width = '200px';
+            dashboardContainer.style.marginLeft = '200px';
+            navbar.style.left = '200px';
+        }
+    }
+</script>
+
+</body>
+</html>
