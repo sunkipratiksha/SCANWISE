@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generated ID cards</title>
+  <style>
+    
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffffff76;
+      text-align: center;
+    }
+
+    h3 {
+      margin-top: 0px;
+      color: #333;
+    }
+
+   
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 10px; 
+  justify-items: center;
+}
+
+.card1,
+.card2 {
+  width: 6cm;
+  height: 10cm; 
+  background-color: #ffff;;
+  padding: 18px;
+  border:1px solid black;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+}
+
+
+.photo-box {
+  width: 2.5cm;
+  height: 2.5cm;
+  margin: 0 auto;
+  border: 2px dashed #333;
+  border-radius: 5px;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+    img {
+      width: 2.5cm;
+      height: 2.5cm;
+      border-radius: 5px;
+    }
+
+    
+    .qrcode {
+      display: block;
+      margin: 20px auto;
+      border: 2px solid #afa4a4;
+      border-radius: 5px;
+      margin-bottom: 3px;
+      height: 4.5cm;
+      width: 4.5cm;
+    }
+
+    .student-info {
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .student-info p {
+      margin: 5px 0;
+      font-size: 13px; /* Decreased font size */
+    }
+
+  </style>
+</head>
+<body>
+  <div class="card-container">
+    <!-- First Card: Photo, Name, and QR Code -->
+    <div class="card1">
+      <center><h3>ID card</h3></center>
+      <div class="photo-box"></div>
+      <div class="student-info">
+        <p><strong>Name:</strong> {{ student.name }}</p>
+      </div>
+      <img class="qrcode" src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
+    </div>
+
+    <!-- Second Card: Roll No, PRN Number, and Contact No -->
+    <div class="card2">
+      <div class="student-info">
+        <p><strong>Class:</strong> {{ student.class_name }}</p>
+        <p><strong>Year : </strong></p>
+        <p><strong>Rollno : </strong></p>
+        <p><strong>Div : </strong></p>
+        <p><strong>PRN no:</strong> {{ student.prnnumber }}</p>
+        <p><strong>Contact no:</strong> {{ student.contact }}</p>
+        <p><strong>Address:</strong> {{ student.address }}</p>
+        <p><strong>Date-of-birth:</strong> {{ student.dob }}</p>
+      </div>
+    </div>
+  </div>
+  <br>
+</body>
+</html>

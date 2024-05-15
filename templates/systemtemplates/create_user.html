@@ -1,0 +1,115 @@
+<!--create_user.html-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create User accounts</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.css">
+    <style>
+        header a {
+            width: 134px;
+            margin-top: 4px;
+        }
+        .login-page {
+            width: 560px;
+            height: 300px;
+            padding: 3% 0 ;
+            margin: auto;
+            margin-bottom: 20px;
+        }
+       
+        .form {
+            position: relative;
+            background: #FFFFFF;
+            max-width: 400px;
+            margin: 0 auto 100px;
+            padding: 45px;
+            text-align: center;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+        }
+        .form input {
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            outline: 0;
+            background: #f2f2f2;
+            width: 100%;
+            border: 0;
+            margin: 0 0 15px;
+            padding: 15px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        .form select {
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            outline: 0;
+            background: #f2f2f2;
+            width: 100%;
+            border: 0;
+            margin: 0 0 15px;
+            padding: 15px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        .form button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        body {
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+
+<!--create_user.html-->
+<body>
+
+    
+    <div class="login-page">
+        <div class="form">
+            <div class="login">
+                <div class="login-header">
+                    <h3>Create Accounts</h3>
+                    <p>Please select the role and enter the username and password to create an account.</p>
+                </div>
+            </div>
+            <form class="login-form" action="{{ url_for('create_user') }}" method="POST">
+                <select name="role" id="roleSelect">
+                    <option value="bookadmin">Book Admin</option>
+                    <option value="librarian">Librarian</option>
+                    <option value="admissionstaff">Admission Staff</option>
+                </select>
+                
+                <input type="text" name="username" placeholder="Username" required/>
+                <input type="password" name="password" placeholder="Password" required/>
+                <button type="submit">Create Account</button>
+            </form>
+
+            <br><a href="{{url_for('SA_dashboard')}}" style="display: inline-block; padding: 10px 20px; background-color: #1884a5; color: #fff; text-decoration: none; border-radius: 5px;">Go to Dashboard</a>
+
+        </div>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <script>
+            // Display pop-up messages using JavaScript
+            alert("{{ messages[0] }}");
+        </script>
+    {% endif %}
+{% endwith %}
+</body>
+</html>

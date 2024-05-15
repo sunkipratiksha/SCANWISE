@@ -1,0 +1,108 @@
+<!--loginsuperadmin.html-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <style>
+        header a {
+            width: 134px;
+            margin-top: 4px;
+        }
+        .login-page {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+       
+        .form {
+            position: relative;
+            background: #FFFFFF;
+            width: 400px; /* Set the form width */
+            padding: 45px;
+            text-align: center;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+        }
+        .form input, .form select, .form button, .form .message a {
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .form input, .form select {
+            outline: 0;
+            background: #f2f2f2;
+            width: 100%;
+            border: 0;
+            margin: 0 0 15px;
+            padding: 15px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        .form button {
+            background-color: #4CAF50;
+            width: 100%;
+            border: 0;
+            padding: 15px;
+            color: #FFFFFF;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .form .message {
+            margin: 15px 0 0;
+            color: #807f7f;
+            font-size: 12px;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .go-to-dashboard-button {
+            background-color: #2196F3;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            float: right;
+            margin-right: 250px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+    
+    <title>Superadmin Login</title>
+</head>
+<body>
+
+    <form action="/go_to_dashboard" method="get"><br>
+        <!-- Go to Dashboard button -->
+        <button class="go-to-dashboard-button">Go to Dashboard</button>
+    </form>
+    <div class="login-page">
+        <div class="form">
+            <div class="login">
+                <div class="login-header">
+                    <h3>SUPERADMIN LOGIN</h3>
+                    <p>Please enter your username and password to log in as a Superadmin.</p>
+                </div>
+            </div>
+            <form class="login-form" action="{{ url_for('process_superadmin_login') }}" method="POST" autocomplete="on">
+
+
+                <input type="text" name="username" placeholder="Username" autocomplete="username">
+                <input type="password" name="password" placeholder="Password" autocomplete="current-password">
+
+                <button type="submit">LOGIN</button>
+                <p class="message">Not a Superadmin? <a href="#">Login as Admin/Librarian</a></p>
+            </form>
+            
+        </div>
+    </div>
+</body>
+</html>

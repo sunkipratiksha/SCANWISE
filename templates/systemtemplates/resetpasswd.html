@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Reset</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .reset-container {
+            background-color: #fff;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .reset-container h2 {
+            color: #333;
+        }
+
+        .reset-form {
+            margin-top: 20px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        .reset-button,
+        .login-button {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="reset-container">
+        <h2>Password Reset</h2>
+        <form class="reset-form">
+            <input type="number" name="phone" placeholder="Enter contact number" class="form-input" required />
+            <button type="submit" class="reset-button">Reset Password</button>
+            <button type="submit" class="login-button">Back to login</button>
+        </form>
+    </div>
+</body>
+</html>

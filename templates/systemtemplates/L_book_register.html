@@ -1,0 +1,351 @@
+<!--L_book_register.html-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librarian Book Registration</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+         
+        }
+
+        .navbar {
+            background-color: #525252;
+            padding-bottom: 20px;
+            padding-top: 9px;
+            color: white;
+            position: fixed;
+            width: 100%;
+            height: 30px;
+            left: 0;
+            z-index: 2;
+            transition: left 0.5s;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding-bottom: 10px;
+        }
+
+        .side-panel {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            background-color: #525252;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            transition: 0.5s;
+            color: white;
+            overflow: scroll;
+        }
+
+
+        .side-panel::-webkit-scrollbar {
+            width: 0.1px;
+        }
+
+        .side-panel::-webkit-scrollbar-thumb {
+            background-color: #525252;
+        }
+
+        .side-panel::-webkit-scrollbar-thumb:hover {
+            background-color: #525252;
+        }
+
+        .side-panel::-webkit-scrollbar-track {
+            background-color: #525252;
+        }
+
+        .side-panel a {
+            padding: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            color: white;
+            display: flex;
+            margin-left: 8px;
+            margin-bottom: 15px;
+        }
+
+        .side-panel a:hover {
+            border: 2px solid whitesmoke;
+        }
+
+        .dashboard-container {
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color: #ffffff;
+            position: fixed;
+            top: 60px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            overflow: hidden;
+            transition: margin-left 0.5s;
+        }
+
+        .side-panel p {
+            font-size: 18px;
+            position: sticky;
+            top: 0;
+            background-color: #525252;
+            padding: 10px;
+            z-index: 1;
+        }
+
+        form {
+            text-align: left;
+            max-width: 500px;
+            margin-left: 220px;
+        }
+
+        label {
+            display: inline-block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 200px;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        .button-container {
+            white-space: nowrap; /* Prevent buttons from wrapping */
+        }
+
+        button {
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        #populateButton,
+        #refreshButton {
+            background-color: #2c72b4;
+            color: white;
+            height: 40px;
+            padding: 10px 15px 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: -15px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        th {
+            text-align: left;
+            padding: 8px;
+        }
+
+        td {
+            padding: 8px;
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-container input,
+        .input-container button {
+            margin-right: 10px;
+        }
+
+       
+        #registerBooksButton,
+#generateBookIDsButton {
+    background-color: #4CAF50; 
+}
+
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar" id="navbar">
+        <span style="font-size: 30px; cursor: pointer; border: 1px solid #ffffff; padding: 5px; float: left; margin-top: 5px; margin-right: 60px;" class="fas fa-bars" onclick="toggleSidePanel()"></span>
+        <a href="/scan_ids">
+            <i class="fas fa-qrcode" style="font-size: 30px; cursor: pointer; border: 1px solid #ffffff; padding: 5px; float: left; margin-top: 5px;"></i>
+        </a>
+    </div>
+    
+   
+    <!--systemtemplates/L_dashboard.html-->
+   
+ 
+    <div class="side-panel" id="sidePanel">
+        <p><b>Librarian Dashboard</b></p>
+        <a href="{{ url_for('libprofile') }}"><i class="fas fa-user" style="margin-right: 8px;"></i> My Profile</a>
+        <a href="{{ url_for('L_dashboard') }}"><i class="fas fa-chart-bar" style="margin-right: 8px;"></i> Dashboard</a>
+        <a href="{{ url_for('L_view_subjects') }}"><i class="fas fa-book-open" style="margin-right: 8px;"></i> View Subjects</a>
+        <a href="{{ url_for('L_book_register') }}"><i class="fas fa-book" style="margin-right: 8px;"></i> Register Books</a>
+        <a href="{{ url_for('viewregisteredbooks') }}"><i class="fas fa-book-reader" style="margin-right: 8px;"></i> Registered Books</a>
+        <!-- <a href="/scan_ids"><i class="fas fa-qrcode" style="margin-right: 8px;"></i> Scan the IDs</a> -->
+        <a href="{{ url_for('view_issued_books') }}"><i class="fas fa-eye" style="margin-right: 8px;"></i> Issued Books</a>
+        <a href="{{ url_for('issued_history') }}"><i class="fas fa-history" style="margin-right: 8px;"></i> Returned Books</a>
+        <a href="{{ url_for('view_all_books') }}"><i class="fas fa-book-reader" style="margin-right: 8px;"></i> View All Books</a>
+        <a href="{{ url_for('registered_students_L') }}"><i class="fas fa-users" style="margin-right: 8px;"></i> Registered Students</a>
+        <a href="{{ url_for('sentmessages') }}"><i class="fas fa-envelope" style="margin-right: 8px;"></i> Sent Messages</a>
+        <!-- <a href="{{ url_for('fine') }}"><i class="fas fa-money-bill" style="margin-right: 8px;"></i> Fine Collected</a> -->
+        <a href="{{ url_for('L_view_courses') }}"><i class="fas fa-eye" style="margin-right: 8px;"></i> Courses</a>
+        <a href="{{ url_for('L_view_generated_ids') }}"><i class="fas fa-id-card" style="margin-right: 8px;"></i> Generated IDs</a>
+        <a href="{{ url_for('logout') }}">
+            <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i>
+            Log out
+        </a>
+    </div>
+    
+    
+    
+  
+
+  
+    <div class="dashboard-container">
+        <h4>Librarian Book Registration</h4>
+ 
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                        <b><li class="{{ category }}" style="color:green;">{{ message }}</li></b>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    
+
+        <!--L_books_register.html-->
+        <form method="post" action="{{ url_for('librarian_book_registration') }}">
+            <table>
+                <tr>
+                    <th>Subject Code:</th>
+                    <td>
+                        <div class="input-container">
+                            <input type="text" name="subjectCode" placeholder="Enter subject code" style="border: 3px solid grey"
+                                   value="{{ selected_subject_code }}">
+                            <button type="submit" id="populateButton">Populate</button>
+                            <button type="button" id="refreshButton">Refresh</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Quantity:</th>
+                    <td><input type="number" name="quantity" placeholder="Enter quantity" style="border: 1px solid grey" value="{{ request.form['quantity'] }}" required></td>
+                    <th>Title:</th>
+                    <td>
+                        <input type="text" name="title" placeholder="Title" readonly style="border: 2px solid grey; font-weight: bold;"
+                            value="{{ subjects_dict[selected_subject_code]['title'] if selected_subject_code in subjects_dict else '' }}">
+                    </td>
+                    <!-- Hidden input field for storing the selected subject code -->
+                    <input type="hidden" name="subjectCodeHidden" value="{{ selected_subject_code }}">
+                </tr>
+                <tr>
+                    <th>Author:</th>
+                    <td><input type="text" name="author" placeholder="Author" style="border: 1px solid grey" value="{{ request.form['author'] }}"></td>
+                    <th>Publication:</th>
+                    <td><input type="text" name="publication" placeholder="Publication" style="border: 1px solid grey" value="{{ request.form['publication'] }}"></td>
+                </tr>
+                <tr>
+                    <th>Class:</th>
+                    <td>
+                        <input type="text" name="course" placeholder="Class" readonly style="border: 2px solid grey; font-weight: bold;"
+                            value="{{ class_value }}">
+                    </td>
+                    <th>Year:</th>
+                    <td>
+                        <input type="text" name="year" placeholder="Year" readonly style="border: 2px solid grey; font-weight: bold;"
+                            value="{{ year_value }}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Semester:</th>
+                    <td>
+                        <input type="text" name="semester" placeholder="Semester" readonly
+                            style="border: 3px solid grey; font-weight: bold;" value="{{ semester_value }}">
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>
+                        <div class="button-container">
+                            <button type="submit" name="registerBooksButton" id="registerBooksButton">Register Books</button>
+                            <button type="submit" name="generateBookIDsButton" id="generateBookIDsButton">Generate Book IDs</button>
+                           
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <script>
+        function toggleSidePanel() {
+            var sidePanel = document.getElementById('sidePanel');
+            var navbar = document.getElementById('navbar');
+            var dashboardContainer = document.querySelector('.dashboard-container');
+
+            // Check if the clicked element or its parent has the ID 'populateButton'
+            if (event.target.id !== 'populateButton' && event.target.parentElement.id !== 'populateButton') {
+                if (sidePanel.style.width === '200px') {
+                    sidePanel.style.width = '0';
+                    dashboardContainer.style.marginLeft = '0';
+                    navbar.style.left = '0';
+                } else {
+                    sidePanel.style.width = '200px';
+                    dashboardContainer.style.marginLeft = '200px';
+                    navbar.style.left = '200px';
+                }
+            }
+        }
+
+        // Add an event listener for the Populate button
+        var populateButton = document.getElementById('populateButton');
+        populateButton.addEventListener('click', function (event) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+
+            // Trigger the form submission
+            document.querySelector('form').submit();
+        });
+
+        // Add an event listener for the Refresh button
+        var refreshButton = document.getElementById('refreshButton');
+        refreshButton.addEventListener('click', function () {
+            // Clear the form fields
+            var form = document.querySelector('form');
+            form.reset();
+
+            // Reload the page after a short delay to allow the form to reset
+            setTimeout(function () {
+                // Manually set the location to force a reload
+                window.location.href = window.location.href;
+            }, 100);
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+<!--3. viewqrcodes.html-->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View QR Codes</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start; 
+            margin: 0px;
+        }
+
+        .card {
+            width: auto;
+            background-color: #ffff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+
+        }
+
+        img.qrcode {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Button styles */
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .button-container a {
+            text-decoration: none;
+            display: inline-block;
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .button-container a:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="button-container">
+        <a href="/upload_students">Go to home page</a> <br><br>
+    
+    </div>
+
+    </div>
+    <div class="card-container">
+        {% if qr_codes_and_id_cards %}
+            {% for libcard_html in qr_codes_and_id_cards %}
+                <div class="card">
+                    {{ libcard_html | safe }}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No students to generate QR codes for</p>
+            <div class="button-container">
+                <a href="/upload_students">Go to home page</a> <br><br>
+            </div>
+            
+            
+        {% endif %}
+    </div>
+</body>
+</html>
+
+
+
+

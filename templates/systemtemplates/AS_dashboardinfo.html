@@ -1,0 +1,197 @@
+<!--AS_dashboardinfo.html-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admission Staff Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.css">
+    <style>
+      body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            overflow: hidden;
+            height: 100%;
+            background-color: #fff; 
+        }
+
+        .navbar {
+            background-color: #525252; /* Grey background for the navbar */
+            padding-bottom: 20px;
+            padding-top: 9px;
+            color: white;
+            position: fixed;
+            width: 100%;
+            height: 25px;
+            left: 0;
+            z-index: 2; /* Ensure the navbar appears above the side panel */
+            transition: left 0.5s; /* Smooth transition for the left property */
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding-bottom: 10;
+        }
+
+        .side-panel {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            background-color: #525252;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            transition: 0.5s;
+            color: white;
+        }
+
+        .side-panel a {
+            padding: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            color: white;
+            display: flex;
+            margin-left: 8px;
+            margin-bottom: 15px;
+        }
+
+        .side-panel a:hover {
+            border: 2px solid whitesmoke;
+        }
+
+        .dashboard-container {
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color: #fff; /* White background for the dashboard container */
+            position: fixed;
+            top: 60px; /* Adjusted top margin to accommodate the navbar height */
+            bottom: 0;
+            left: 0; /* Adjusted left margin to match the width of the side panel */
+            right: 0;
+            overflow: auto;
+            transition: margin-left 0.5s;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+
+        h1 {
+            color: rgb(255, 255, 255); 
+        }
+
+
+        .info-container {
+           display: flex;
+           justify-content: space-around;
+           flex-wrap: wrap;
+           margin-top: 20px;
+        }
+
+        .info-box {
+            border-radius: 8px;
+           width: calc(33% - 20px); /* 3 boxes in 1 line*/
+           height: 160px;
+           padding-top: 20px;
+           margin: 10px;
+           background-color: #f39c12; 
+           color:white;
+           text-align: center;
+            border-radius: 10px;
+           box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+       }
+
+/* 6 boxes when side panel is toggled in */
+@media (max-width: 768px) {
+      .info-box {
+         width: calc(50% - 20px); /*  2 boxes in one line on smaller screens */
+    }
+}
+
+       
+.info-box i {
+    font-size: 25px;
+    margin-bottom: 2px;
+    color: #ffffff;
+    opacity: 0.4; /* Adjust opacity value as needed */
+}
+
+       
+.info-box i {
+    font-size: 25px;
+    margin-bottom: 2px;
+    color: #ffffff;
+    opacity: 0.4; /* Adjust opacity value as needed */
+}
+
+
+       
+    </style>
+</head>
+<body>
+
+<div class="navbar" id="navbar">
+    <span style="font-size:30px;cursor:pointer;border: 1px solid #ffffff;padding: 5px;float:left" class="fas fa-bars"
+          onclick="toggleSidePanel()"></span>
+   
+</div>
+
+<div class="side-panel" id="sidePanel">
+    <p><b>Admission Staff Panel</b></p>
+    <a href="{{ url_for('ASprofile') }}"><i class="fas fa-user" style="margin-right: 8px;"></i> My Profile</a>
+    <a href="{{ url_for('AS_dashboard') }}"><i class="fas fa-chart-bar" style="margin-right: 8px;"></i> Dashboard</a>
+    <a href="{{ url_for('students_table') }}"><i class="fas fa-users" style="margin-right: 8px;"></i> Registered Students</a>
+    <a href="{{ url_for('upload_students') }}"><i class="fas fa-user-plus" style="margin-right: 8px;"></i> Add Students</a>
+    <a href="{{ url_for('view_student_ids') }}"><i class="fas fa-id-card" style="margin-right: 8px;"></i> View Student IDs</a>
+    <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Log out</a>
+</div>
+
+<!--AS_dashboardinfo.html-->
+<div class="dashboard-container">
+        <h2>Admission staff Dashboard</h2>
+  
+<div class="info-container">
+    <div class="info-box registeredstudents" style="background-color: #f39c12; height: 160px;">
+        <i class="fas fa-users"></i>
+        <h2>Total Students</h2>
+        <h1>{{ total_students_count }}</h1>
+    </div>
+
+    <!-- Info boxes for class-wise counts -->
+    {% for class, count in class_counts.items() %}
+    <div class="info-box {{ class|lower }}">
+        <i class="fas fa-users"></i>
+        <h2>{{ class }} Students</h2>
+        <h1>{{ count }}</h1>
+    </div>
+    {% endfor %}
+</div>
+</div>
+
+<script>
+    function toggleSidePanel() {
+        var sidePanel = document.getElementById('sidePanel');
+        var navbar = document.getElementById('navbar');
+        var dashboardContainer = document.querySelector('.dashboard-container');
+
+        if (sidePanel.style.width === '200px') {
+            sidePanel.style.width = '0';
+            dashboardContainer.style.marginLeft = '0';
+            navbar.style.left = '0';
+        } else {
+            sidePanel.style.width = '200px';
+            dashboardContainer.style.marginLeft = '200px';
+            navbar.style.left = '200px';
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!--viewbooks.html-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .navbar {
+            background-color: #525252;
+            padding-bottom: 20px;
+            padding-top: 9px;
+            color: white;
+            position: fixed;
+            width: 100%;
+            height: 25px;
+            left: 0;
+            z-index: 2;
+            transition: left 0.5s;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding-bottom: 10px;
+        }
+
+        .side-panel {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            background-color: #525252;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            transition: 0.5s;
+            color: white;
+        }
+
+        .side-panel a {
+            padding: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            color: white;
+            display: flex;
+            margin-left: 8px;
+            margin-bottom: 15px;
+        }
+
+        .side-panel a:hover {
+            border: 2px solid whitesmoke;
+        }
+
+        .dashboard-container {
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color: #ffffff;
+            position: fixed;
+            top: 29px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+           
+            transition: margin-left 0.5s;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        select, table, button {
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .table-container {
+            overflow: scroll;
+            width: 100%;
+            max-height: 400px;
+        }
+        th,
+td {
+    padding: 3px 0px 0px 12px;
+    text-align: left;
+    border: 1px solid #d5b5b5; 
+}
+
+table {
+    width: 100%;
+    background-color: #fff;
+   
+    border-collapse: collapse; 
+}
+        td {
+            font-size: 13px;
+            max-width: 150px; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: #000000;
+            position: sticky;
+            top: 0; 
+            padding: 3px 0px 0px 12px;
+            height: 38px;
+        }
+        
+        #courseDropdown, #yearDropdown, #semesterDropdown {
+            display: inline-block;
+            margin-right: 20px;
+            width: 140px;
+            height: 40px;
+        }
+
+        label, select {
+            display: inline-block;
+            margin-bottom: 10px;
+            margin-right: 20px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 0px 12px 0px;
+            width: 180px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .modify-button {
+    border: none;
+    background-color: inherit; 
+    padding: 0px 0px;
+    border-radius: 5px;
+    color: #000000;
+    height: 20px;
+    width:18px;
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 3;
+    overflow: auto;
+}
+
+.modal {
+    background-color: #fefefe;
+    margin: 20% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px; 
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+    </style>
+</head>
+
+<body>
+
+<div class="navbar" id="navbar">
+    <span style="font-size:30px;cursor:pointer;border: 1px solid #ffffff;padding: 5px;float:left" class="fas fa-bars"
+          onclick="toggleSidePanel()"></span>
+    
+</div>
+
+<div class="side-panel" id="sidePanel">
+    <p><b>Book Admin Panel</b></p>
+    <a href="{{ url_for('admin_profile') }}"><i class="fas fa-user" style="margin-right: 8px;"></i> My Profile</a>
+    <a href="{{ url_for('BA_dashboard') }}"><i class="fas fa-chart-bar" style="margin-right: 8px;"></i> Dashboard</a>
+    <a href="{{ url_for('admin_create_book') }}"><i class="fas fa-plus" style="margin-right: 8px;"></i> Add Subjects</a>
+    <a href="{{ url_for('view_books') }}"><i class="fas fa-list" style="margin-right: 8px;"></i> View Subjects</a>
+    <a href="{{ url_for('delete_books') }}"><i class="fas fa-trash" style="margin-right: 8px;"></i> Delete Subjects</a>
+    <a href="{{ url_for('view_courses') }}"><i class="fas fa-eye" style="margin-right: 8px;"></i> View Courses</a>
+
+    <a href="{{ url_for('logout') }}">
+        <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i>
+        Log out
+    </a>
+</div>
+
+<div class="dashboard-container">
+    <h3>View Subjects</h3>
+    <form method="post" action="{{ url_for('view_books') }}">
+        <label for="class">Select Class:</label>
+        <select id="class" name="course" style="width: 140px; height: 40px;">
+            <option value="">All Courses</option>
+            {% for course in courses %}
+                <option value="{{ course }}">{{ course }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="yearDropdown">Select Year:</label>
+        <select id="yearDropdown" name="year">
+            <option value="">All Years</option>
+            <option value="FY">First Year</option>
+            <option value="SY">Second Year</option>
+            <option value="TY">Third Year</option>
+            <option value="4Y">Fourth Year</option>
+        </select>
+
+        <label for="semesterDropdown">Select Semester:</label>
+        <select id="semesterDropdown" name="semester">
+            <option value="">All Semesters</option>
+            <option value="sem1">Semester 1</option>
+            <option value="sem2">Semester 2</option>
+        </select>
+
+        <br>
+        <button class="submit">View Subjects</button>
+    </form>
+    <br>
+
+    {% if error %}
+        <p>{{ error }}</p>
+    {% else %}
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    
+                    <th>Course</th>
+                    <th>Year</th>
+                    <th>Semester</th>
+                    <th>Subject</th>
+                    <th>Subject Code</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if books %}
+                    {% for book in books %}
+                        <tr>
+                            
+                            <td>{{ book.class }}</td>
+                            <td>{{ book.year }}</td>
+                            <td>{{ book.semester }}</td>
+                            <td>{{ book.subject }}</td>
+                            <td>{{ book.subject_code }}</td>
+                            <td>
+                                <form method="post" action="{{ url_for('edit_subject') }}" style="display: inline;">
+                                    <input type="hidden" name="currentSubjectName" value="{{ book.subject }}">
+                                    <button class="modify-button" type="button" onclick="openEditSubjectModal('{{ book.subject }}', '{{ book.subject_code }}')">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6">No books found.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        </div>
+    {% endif %}
+</div>
+
+<div class="modal-overlay" id="editSubjectModal">
+    <div class="modal">
+        <h2>Edit Subject</h2>
+        <form id="editSubjectForm" method="post" action="{{ url_for('edit_subject') }}">
+            <div class="form-group">
+                <label for="editedSubjectName">New Subject Name:</label>
+                <input type="text" id="editedSubjectName" name="editedSubjectName" required style="height: 25px; width:200px;">
+            </div>
+            <div class="form-group">
+                <label for="editedSubjectCode">New Subject Code:</label>
+                <input type="text" id="editedSubjectCode" name="editedSubjectCode" required style="height: 25px; width:200px;">
+                <input type="hidden" id="currentSubjectName" name="currentSubjectName">
+            </div>
+            <div class="form-group">
+                <button type="button" onclick="closeEditSubjectModal()">Cancel</button>
+                <button type="submit">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function toggleSidePanel() {
+        var sidePanel = document.getElementById('sidePanel');
+        var navbar = document.getElementById('navbar');
+        var dashboardContainer = document.querySelector('.dashboard-container');
+
+        if (sidePanel.style.width === '200px') {
+            sidePanel.style.width = '0';
+            dashboardContainer.style.marginLeft = '0';
+            navbar.style.left = '0';
+        } else {
+            sidePanel.style.width = '200px';
+            dashboardContainer.style.marginLeft = '200px';
+            navbar.style.left = '200px';
+        }
+    }
+    function openEditSubjectModal(subjectName, subjectCode) {
+        console.log("Editing subject:", subjectName, "Code:", subjectCode);
+        document.getElementById('editedSubjectName').value = subjectName;
+        document.getElementById('editedSubjectCode').value = subjectCode;
+        document.getElementById('currentSubjectName').value = subjectName;
+        document.getElementById('editSubjectModal').style.display = 'block';
+    }
+
+    function closeEditSubjectModal() {
+        document.getElementById('editSubjectModal').style.display = 'none';
+    }
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book QR Codes</title>
+    <style>
+      
+        .book {
+            border: 1px solid #ccc;
+            padding: 0px 5px 5px 5px;
+            margin-bottom: 20px;
+            box-sizing: border-box; 
+            text-align: center; 
+        }
+        .book img {
+            max-width: 100%; 
+            height: auto; 
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .filter-input {
+            margin-bottom: 10px;
+            padding: 5px;
+            width: 200px;
+            box-sizing: border-box;
+        }
+
+        .print-button {
+            display: block;
+            margin-top: 3px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            border:none;
+           
+        }
+    </style>
+</head>
+<body>
+
+    <input type="text" id="subjectCodeFilter" class="filter-input" placeholder="Filter by Subject Code">
+    <input type="text" id="bookIdFilter" class="filter-input" placeholder="Filter by Book ID">   <!-- Print button -->
+    <center><button class="print-button" onclick="window.print()">Print QR Codes</button><br>
+    <!-- Display QR codes -->
+    <div class="grid-container">
+        {% for book in qr_code_data %}
+        <div class="book" data-subject-code="{{ book.details['Subject Code'] }}" data-book-id="{{ book.details['Book ID'] }}">
+            <p><b>Book ID:</b> {{ book.details['Book ID'] }}</p>
+            <img src="data:image/png;base64,{{ book.qr_image }}" alt="QR Code">
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- JavaScript for filtering QR codes -->
+    <script>
+        document.getElementById("subjectCodeFilter").addEventListener("input", function() {
+            var filterValue = this.value.toUpperCase();
+            var books = document.querySelectorAll(".book");
+            books.forEach(function(book) {
+                var subjectCode = book.getAttribute("data-subject-code");
+                if (subjectCode.toUpperCase().includes(filterValue)) {
+                    book.style.display = "block";
+                } else {
+                    book.style.display = "none";
+                }
+            });
+        });
+
+        document.getElementById("bookIdFilter").addEventListener("input", function() {
+            var filterValue = this.value.toUpperCase();
+            var books = document.querySelectorAll(".book");
+            books.forEach(function(book) {
+                var bookId = book.getAttribute("data-book-id");
+                if (bookId.toUpperCase().includes(filterValue)) {
+                    book.style.display = "block";
+                } else {
+                    book.style.display = "none";
+                }
+            });
+        });
+    </script>
+
+    <!-- Link to go back to registration -->
+    <a href="http://127.0.0.1:5000/L_dashboard" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #ffffff; text-decoration: none; border-radius: 5px;">Go back to registration</a>
+
+</body>
+</html>

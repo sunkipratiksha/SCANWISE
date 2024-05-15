@@ -1,0 +1,239 @@
+
+
+
+<!--SA_dashboardinfo.html-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            overflow: hidden;
+            height: 100%;
+            background-color: #fff; 
+        }
+
+        .navbar {
+            background-color: #525252; /* Grey background for the navbar */
+            padding-bottom: 20px;
+            padding-top: 9px;
+            color: white;
+            position: fixed;
+            width: 100%;
+            height: 25px;
+            left: 0;
+            z-index: 2; /* Ensure the navbar appears above the side panel */
+            transition: left 0.5s; /* Smooth transition for the left property */
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding-bottom: 10;
+        }
+
+        .side-panel {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            background-color: #525252;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            transition: 0.5s;
+            color: white;
+        }
+
+        .side-panel a {
+            padding: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            color: white;
+            display: flex;
+            margin-left: 8px;
+            margin-bottom: 15px;
+        }
+
+        .side-panel a:hover {
+            border: 2px solid whitesmoke;
+        }
+
+        .dashboard-container {
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color: #fff; /* White background for the dashboard container */
+            position: fixed;
+            top: 60px; /* Adjusted top margin to accommodate the navbar height */
+            bottom: 0;
+            left: 0; /* Adjusted left margin to match the width of the side panel */
+            right: 0;
+            overflow: auto;
+            transition: margin-left 0.5s;
+        }
+
+        p {
+            font-size: 18px;
+        }
+        .info-container {
+           display: flex;
+           justify-content: space-around;
+           flex-wrap: wrap;
+           margin-top: 20px;
+        }
+
+        .info-box {
+            border-radius: 8px;
+           width: calc(33% - 20px); /* 3 boxes in 1 line*/
+           height: 100px;
+           padding-top: 20px;
+           margin: 10px;
+           text-align: center;
+            border-radius: 10px;
+           box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+       }
+
+/* 6 boxes when side panel is toggled in */
+      @media (max-width: 768px) {
+      .info-box {
+         width: calc(50% - 20px); /*  2 boxes in one line on smaller screens */
+    }
+}
+
+       
+.info-box i {
+    font-size: 25px;
+    margin-bottom: 2px;
+    color: #ffffff;
+    opacity: 0.4; /* Adjust opacity value as needed */
+}
+
+        .admins {
+            background-color: #e74c3c;
+            color: #fff;
+            height: 160px;
+        }
+
+        .librarians {
+            background-color: #3498db; /*  #2ecc71 */
+            color: #fff;
+            height: 160px;
+        }
+
+        .college-staff {
+            background-color: #f39c12;
+            color: #fff;
+            height: 160px;
+        }
+
+        .courses {
+            background-color: #2ecc71;
+            color: #fff;
+            height: 160px;
+        }
+
+        .accounts {
+            background-color: #9b59b6;
+            color: #fff;
+            height: 160px;
+        }
+
+        
+        .students {
+            background-color: #92df16;
+            color: #fff;
+            height: 160px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar" id="navbar">
+        <span style="font-size:30px;cursor:pointer;border: 1px solid #ffffff;padding: 5px;float:left"
+              class="fas fa-bars" onclick="toggleSidePanel()"></span>
+        <!-- <a href="#"><i class="fas fa-home" style="margin-right: 8px;"></i> Xyz</a>
+        <a href="#"><i class="fas fa-cogs" style="margin-right: 8px;"></i> Settings</a> -->
+    </div>
+
+    <div class="side-panel" id="sidePanel">
+        <p><b>System Admin Panel</b></p>
+        <a href="{{ url_for('SA_profile') }}"><i class="fas fa-user" style="margin-right: 8px;"></i> My Profile</a>
+        <a href="{{ url_for('SA_dashboard') }}"><i class="fas fa-chart-bar" style="margin-right: 8px;"></i> Dashboard</a>
+        <a href="{{ url_for('manage_users') }}"><i class="fas fa-users" style="margin-right: 8px;"></i> Manage Users</a>
+        <a href="{{ url_for('create_user') }}"><i class="fas fa-user-plus" style="margin-left: 26px; margin-right: 8px;"></i> Add User</a>
+        <a href="{{ url_for('manage_courses') }}"><i class="fas fa-book" style="margin-right: 8px;"></i> Manage Courses</a>
+        <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Log out</a>
+    </div>
+    
+  <!--SA_dashboardinfo.html-->
+  <div class="dashboard-container">
+    <h2>System Admin Dashboard</h2>
+    <!-- Dashboard Content -->
+    <div class="info-container">
+        <div class="info-box admins">
+            <i class="fas fa-user"></i>
+            <p>Total Book Admins</p>
+            <h2>{{ book_admins_count }}</h2>
+        </div>
+
+        <div class="info-box librarians">
+            <i class="fas fa-user"></i>
+            <p>Total Librarians</p>
+            <h2>{{ librarians_count }}</h2>
+        </div>
+
+        <div class="info-box college-staff">
+            <i class="fas fa-user"></i>
+            <p>Total Admission Staff</p>
+            <h2>{{ admission_staff_count }}</h2>
+        </div>
+
+        <div class="info-box accounts">
+            <i class="fas fa-users"></i>
+            <p>Total Accounts</p>
+            <h2>{{ total_accounts_count }}</h2> 
+        </div>
+
+        <div class="info-box courses">
+            <i class="fas fa-book"></i>
+            <p>Total Courses</p>
+            <h2>{{ courses_count }}</h2>
+        </div>
+
+        <div class="info-box students">
+            <i class="fas fa-graduation-cap"></i>
+            <p>Registered Students</p>
+            <h2>{{ registered_students_count }}</h2>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleSidePanel() {
+        var sidePanel = document.getElementById('sidePanel');
+        var navbar = document.getElementById('navbar');
+        var dashboardContainer = document.querySelector('.dashboard-container');
+
+        if (sidePanel.style.width === '200px') {
+            sidePanel.style.width = '0';
+            dashboardContainer.style.marginLeft = '0';
+            navbar.style.left = '0';
+        } else {
+            sidePanel.style.width = '200px';
+            dashboardContainer.style.marginLeft = '200px';
+            navbar.style.left = '200px';
+        }
+    }
+</script>
+
+</body>
+</html>

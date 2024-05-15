@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admission Staff Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .navbar {
+            background-color: #525252; 
+            padding-bottom: 20px;
+            padding-top: 9px;
+            color: white;
+            position: fixed;
+            width: 100%;
+            height: 25px;
+            left: 0;
+            z-index: 2; 
+            transition: left 0.5s; 
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding-bottom: 10;
+        }
+
+        .side-panel {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            background-color: #525252;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            transition: 0.5s;
+            color: white;
+        }
+
+        .side-panel a {
+            padding: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            color: white;
+            display: flex;
+            margin-left: 8px;
+            margin-bottom: 15px;
+        }
+
+        .side-panel a:hover {
+            border: 2px solid whitesmoke;
+        }
+
+        .dashboard-container {
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color: #ffffff; 
+            position: fixed;
+            top: 60px; 
+            bottom: 0;
+            left: 0; 
+            right: 0;
+            overflow: auto;
+            transition: margin-left 0.5s;
+        }
+
+        h4 {
+            text-align: center;
+            margin-top: 0px;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1px;
+        }
+
+        .home-button,  .filter-submit-button {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .home-button {
+            background-color: #17bb22;
+            color: #fff;
+        }
+
+        .table-container {
+            overflow: scroll;
+            width: 100%;
+            max-height: 520px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            height: 12px;
+        }
+
+        td {
+            font-size: 16px;
+            max-width: 150px; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        th {
+            background-color: #FF5722;
+            color: #fff;
+            position: sticky;
+            top: 0; 
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .address-cell {
+            word-wrap: break-word;
+            white-space: normal;
+            max-height: 40px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .filter-submit-button {
+            background-color: #008CBA;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            width:100px;
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .count-table {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .filter-input{
+            width: 140px; height: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar" id="navbar">
+    <span style="font-size:30px;cursor:pointer;border: 1px solid #ffffff;padding: 5px;float:left" class="fas fa-bars"
+          onclick="toggleSidePanel()"></span>
+    
+</div>
+
+<div class="side-panel" id="sidePanel">
+    <p><b>Admission staff Panel</b></p>
+    <a href="{{ url_for('ASprofile') }}"><i class="fas fa-user" style="margin-right: 8px;"></i> My Profile</a>
+    <a href="{{ url_for('AS_dashboard') }}"><i class="fas fa-chart-bar" style="margin-right: 8px;"></i> Dashboard</a>
+    <a href="{{ url_for('students_table') }}">
+        <i class="fas fa-users" style="margin-right: 8px;"></i>Registered Students
+    </a>
+    
+    <a href="{{ url_for('upload_students') }}"><i class="fas fa-user-plus" style="margin-right: 8px;"></i> Add Students</a>
+
+    <a href="{{ url_for('view_student_ids') }}"><i class="fas fa-user-plus" style="margin-right: 8px;"></i> View Student IDs</a>
+    <a href="{{ url_for('logout') }}">
+        <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i>
+        Log out
+    </a>
+    
+</div>
+
+<!--student_table.html-->
+<div class="dashboard-container">
+    <div class="container">
+        <h3>Registered Students</h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-right: auto;">
+            <div>
+                <!-- Filter form -->
+                <form id="filterForm">
+                    <a href="/upload_students" class="home-button">Go to home page</a>
+                    <label for="class">Select Course:</label>
+                    <select id="class" name="course" style="width: 140px; height: 30px;">
+                        <option value="">All Courses</option>
+                        {% for course in courses %}
+                        <option value="{{ course }}">{{ course }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="text" id="nameFilter" placeholder="Enter Name" class="filter-input">
+                <input type="text" id="prnFilter" placeholder="Enter PRN Number" class="filter-input">
+                </form>
+                
+            </div>
+            <!-- Add
+            <!-- Add the count of students for each class here -->
+            <div id="count" class="count-table">
+                <table border="1">
+                    <tr>
+                        {% for class, count in student_counts.items() %}
+                        <td>{{ class }}</td>
+                        <td>{{ count }} students</td>
+                        {% if loop.index % 2 == 0 %}
+                    </tr><tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <br>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>SrNo.</th>
+                        <th>Name</th>
+                        <th>Course</th>
+                        <th>PRN Number</th>
+                        <th>Contact</th>
+                        <th>Address</th>
+                        <th>Date of Birth</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ loop.index }}</td>  <!-- Display SrNo. using loop.index -->
+                       
+                        <td>{{ student[1] }}</td>
+                        <td>{{ student[2] }}</td>
+                        <td>{{ student[3] }}</td>
+                        <td>{{ student[4] }}</td>
+                        <td>{{ student[5] }}</td>
+                        <td>{{ student[6] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</div>
+
+<script>
+    function toggleSidePanel() {
+        var sidePanel = document.getElementById('sidePanel');
+        var navbar = document.getElementById('navbar');
+        var dashboardContainer = document.querySelector('.dashboard-container');
+
+        if (sidePanel.style.width === '200px') {
+            sidePanel.style.width = '0';
+            dashboardContainer.style.marginLeft = '0';
+            navbar.style.left = '0';
+        } else {
+            sidePanel.style.width = '200px';
+            dashboardContainer.style.marginLeft = '200px';
+            navbar.style.left = '200px';
+        }
+    }
+   
+    // Add event listeners to input fields and select dropdown for dynamic filtering
+    document.getElementById('nameFilter').addEventListener('input', applyFilters);
+    document.getElementById('prnFilter').addEventListener('input', applyFilters);
+    document.getElementById('class').addEventListener('change', applyFilters);
+
+    function applyFilters() {
+        var nameFilter = document.getElementById('nameFilter').value.trim().toLowerCase();
+        var prnFilter = document.getElementById('prnFilter').value.trim().toLowerCase();
+        var courseFilter = document.getElementById('class').value.trim().toLowerCase();
+
+        // Select all table rows
+        var rows = document.querySelectorAll('.table-container table tbody tr');
+        var srNo = 1; // Initialize serial number counter
+
+        // Loop through each row and hide/show based on filters
+        rows.forEach(function(row) {
+            var name = row.cells[1].textContent.trim().toLowerCase();
+            var prn = row.cells[3].textContent.trim().toLowerCase();
+            var course = row.cells[2].textContent.trim().toLowerCase();
+
+            // Check if row matches filters
+            var nameMatch = name.includes(nameFilter) || nameFilter === '';
+            var prnMatch = prn.includes(prnFilter) || prnFilter === '';
+            var courseMatch = course === courseFilter || courseFilter === '';
+
+            // Show row if all filters match, otherwise hide
+            if (nameMatch && prnMatch && courseMatch) {
+                row.style.display = '';
+                // Set the SrNo. and increment the counter
+                row.cells[0].textContent = srNo++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

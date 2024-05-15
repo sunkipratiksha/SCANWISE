@@ -1,0 +1,91 @@
+<!--generated_ids.html-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated Book IDs</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #2c72b4;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr)); 
+            gap: 20px; 
+            justify-content: center;
+        }
+
+        .book-details {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-details p {
+            margin: 5px 0;
+        }
+
+        button {
+            background-color: #2c72b4;
+            color: #ffffff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #1f4c7e;
+        }
+    </style>
+</head>
+<body>
+
+    <!--view_generated_ids.html-->
+    <h2>Generated Book IDs</h2>
+
+    <div class="grid-container">
+        {% for book_id, details in book_details.items() %}
+            <div class="book-details">
+                <p style="font-weight: bold;">Book ID: {{ book_id }}</p>
+                <p>Class: {{ details.Class }}</p>
+                <p>Year: {{ details.Year }}</p>
+                <p>Semester: {{ details.Semester }}</p>
+                <p>Title: {{ details.Title }}</p>
+                <p>Author: {{ details.Author }}</p>
+                <p>Publication: {{ details.Publication }}</p>
+                <p>Subject Code: {{ details['Subject Code'] }}</p>  <!-- Ensure correct access here -->
+            </div>
+        {% endfor %}
+    </div>
+    
+    
+    <form action="{{ url_for('upload_qr_code_details') }}" method="post">
+        {% for book_id, details in book_details.items() %}
+            <input type="hidden" name="book_id[]" value="{{ book_id }}">
+            <input type="hidden" name="class[{{ book_id }}]" value="{{ details.Class }}">
+            <input type="hidden" name="year[{{ book_id }}]" value="{{ details.Year }}">
+            <input type="hidden" name="semester[{{ book_id }}]" value="{{ details.Semester }}">
+            <input type="hidden" name="title[{{ book_id }}]" value="{{ details.Title }}">
+            <input type="hidden" name="subject_code[{{ book_id }}]" value="{{ details['Subject Code'] }}">
+            <input type="hidden" name="author[{{ book_id }}]" value="{{ details.Author }}">
+            <input type="hidden" name="publication[{{ book_id }}]" value="{{ details.Publication }}">
+        {% endfor %}
+        <button type="submit">Upload</button>
+    </form>
+    
+</body>
+</html>

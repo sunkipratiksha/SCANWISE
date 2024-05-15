@@ -1,0 +1,42 @@
+<!--systemtemplates/error.html-->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <style>
+        
+
+        body {
+            font-family: Arial, sans-serif;
+     }
+        .error-button {
+            background-color: #f44336;
+            color: white;
+            padding: 15px 25px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 10px;
+            border: none;
+        }
+    </style>
+</head>
+
+<!--systemtemplates/error.html-->
+<body>
+    <h1>Oops..!!</h1>
+    <p>{{ error_msg }}</p>
+    
+    <!-- Button to return to scan_ids -->
+    <a href="{{ url_for('scan_ids') }}" class="error-button">Return to Scan IDs</a>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!--flash_message.html-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash Message</title>
+</head>
+<body>
+    <div>
+        <h1>Flash Message</h1>
+        <ul>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </ul>
+        <!-- Button to generate QR codes -->
+        <form action="{{ url_for('generate_qr_codes') }}" method="post">
+            <button type="submit">Generate QR Codes</button>
+        </form>
+    </div>
+</body>
+</html>

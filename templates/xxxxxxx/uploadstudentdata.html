@@ -1,0 +1,150 @@
+
+
+<!--2. uploadstudentdata-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 30px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-upload-label {
+            display: inline-block;
+            background-color: #008CBA;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .manual-registration-button {
+            background-color: #FF9800;
+        }
+
+        .generate-id-cards-button {
+            background-color: #E91E63;
+        }
+
+        .registered-students-button {
+            background-color: #FF5722;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .go-to-dashboard-button {
+            background-color: #2196F3;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+       
+        .flash {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background-color: #4CAF50;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .flash li {
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Registration</h1>
+    <div class="container">
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flash">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+
+        <form action="/upload_excel" method="post" enctype="multipart/form-data">
+            <label>Upload an Excel File</label>
+            <label for="excel_file" class="file-upload-label">Choose an Excel file</label>
+            <input type="file" name="excel_file" id="excel_file" accept=".xlsx, .xls">
+            <input type="submit" value="Upload">
+        </form>
+        
+        <form action="/generate_id_cards" method="post"><br>
+            <!-- Generate QR Codes button -->
+            <input type="submit" class="generate-id-cards-button" value="Generate QR Codes">
+        </form>
+        
+        <form action="/upload_to_database" method="post"><br>
+            <!-- Upload to Database button -->
+            <input type="submit" class="upload-to-database-button" value="Upload to Database">
+        </form>
+        <br>
+        <form action="{{ url_for('registered_students') }}" method="get">
+            <button class="registered-students-button">View Registered Students</button>
+        </form>
+
+        <form action="/go_to_dashboard" method="get"><br>
+            <!-- Go to Dashboard button -->
+            <button class="go-to-dashboard-button">Go to Dashboard</button>
+        </form>
+    
+        
+        
+    </div>
+</body>
+</html>

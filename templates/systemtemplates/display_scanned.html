@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanned Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; 
+        }
+        .container {
+            display: flex;
+            flex-direction: column; /* Display boxes vertically */
+            align-items: center; /* Center align boxes horizontally */
+            margin-top: 0;
+        }
+        .box {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            margin-bottom: 20px;
+            width: 30%;
+        }
+        .box h2 {
+            font-size: 18px; 
+            margin-bottom: 10px;
+        }
+        .box p {
+            font-size: 14px; 
+            margin-bottom: 5px;
+        }
+        .box b {
+            font-weight: bold;
+            padding-right: 5px; /
+        }
+        .dashboard-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px; 
+        }
+
+        .flash-error {
+  font-weight: bold;
+  font-size: 24px;
+  text-align: center;
+}
+
+    </style>
+</head>
+<body>
+    <!--display_scanned.html-->
+    <!-- {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        {% if category == 'error' %}
+          <div class="flash-message flash-error">{{ message }}</div>
+        {% else %}
+          <div class="flash-message">{{ message }}</div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endwith %} -->
+  
+
+    <center><h3>Scanned Data</h3></center>
+    <div class="container">
+        <!-- Display book QR code details -->
+        {% if book_details %}
+        <div class="box">
+            <h2>Book QR Code Data:</h2>
+            <p>
+            {% for key, value in book_details.items() %}
+                <b>{{ key }}:</b>&nbsp; {{ value }}<br> <!-- Add non-breaking space -->
+            {% endfor %}
+            </p>
+        </div>
+        {% endif %}
+
+        <!-- Display student QR code details -->
+        {% if student_data %}
+        <div class="box">
+            <h2>Student QR Code Data:</h2>
+            <p><b>PRN Number:</b>&nbsp; {{ student_data['prnnumber'] }}<br>
+               <b>Name:</b>&nbsp; {{ student_data['name'] }}<br>
+               <b>Contact:</b>&nbsp; {{ student_data['contact'] }}<br>
+              
+              
+           
+        </div>
+        {% endif %}
+
+        <!-- Button to go to the dashboard -->
+        <a href="http://127.0.0.1:5000/L_dashboard" class="dashboard-button">Go to Dashboard</a>
+    </div>
+</body>
+</html>

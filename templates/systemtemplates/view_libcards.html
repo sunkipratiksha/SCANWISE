@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generated ID cards</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffffff76;
+      text-align: center;
+    }
+
+    h3 {
+      margin-top: 0px;
+      color: #333;
+    }
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(4, 0fr);
+      gap: 0;
+      justify-items: center;
+    }
+
+    .card1 {
+  width: 6cm;
+  height: 10cm;
+  background-color: #ffff;
+  padding: 18px;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+  margin-left: 45px;
+}
+
+.card2 {
+  width: 6cm;
+  height: 10cm;
+  background-color: #ffff;
+  padding: 18px;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+  margin-left: 5px; /* Adjust margin-left to -1px to stick with the border of card1 */
+}
+
+
+    .photo-box {
+      width: 2.5cm;
+      height: 2.5cm;
+      margin: 0 auto;
+      border: 2px dashed #333;
+      border-radius: 5px;
+      background-color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    img {
+      width: 2.5cm;
+      height: 2.5cm;
+      border-radius: 5px;
+    }
+
+    .qrcode {
+      display: block;
+      margin: 20px auto;
+      border: 2px solid #afa4a4;
+      border-radius: 5px;
+      margin-bottom: 3px;
+      height: 4.5cm;
+      width: 4.5cm;
+    }
+
+    .student-info {
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .student-info p {
+      margin: 5px 0;
+      font-size: 13px;
+    }
+
+    .button-container {
+      margin-top: 20px;
+    }
+
+    .redirect-button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .redirect-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="button-container">
+    <button class="redirect-button" onclick="window.location.href='http://127.0.0.1:5000/AS_dashboard'">Go to Dashboard</button>
+  </div>
+
+  <br><br>
+
+  <div class="card-container">
+    {% for item in qr_codes_and_students %}
+    <!-- First Card: Photo, Name, and QR Code -->
+    <div class="card1">
+      <center><h3>ID card</h3></center>
+      <div class="photo-box"></div>
+      <div class="student-info">
+        <p><strong>Name:</strong> {{ item['student']['name'] }}</p>
+      </div>
+      <img class="qrcode" src="data:image/png;base64,{{ item['qr_code'] }}" alt="QR Code">
+    </div>
+
+    <!-- Second Card: Class, PRN Number, Contact, Address, and Date of Birth -->
+    <div class="card2">
+      <div class="student-info">
+        <p><strong>Class:</strong> {{ item['student']['class_name'] }}</p>
+        <p><strong>PRN no:</strong> {{ item['student']['prnnumber'] }}</p>
+        <p><strong>Contact no:</strong> {{ item['student']['contact'] }}</p>
+        <p><strong>Address:</strong> {{ item['student']['address'] }}</p>
+        <p><strong>Date-of-birth:</strong> {{ item['student']['dob'] }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</body>
+</html>

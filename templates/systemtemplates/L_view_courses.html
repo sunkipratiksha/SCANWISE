@@ -1,0 +1,210 @@
+<!--L_view_courses.html-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View courses</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+           
+        }
+
+        .navbar {
+            background-color: #525252;
+            padding-bottom: 20px;
+            padding-top: 9px;
+            color: white;
+            position: fixed;
+            width: 100%;
+            height: 30px;
+            left: 0;
+            z-index: 2;
+            transition: left 0.5s;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding-bottom: 10px;
+        }
+
+        .side-panel {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            background-color: #525252;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            transition: 0.5s;
+            color: white;
+            overflow: scroll;
+        }
+
+ 
+        .side-panel::-webkit-scrollbar {
+            width: 0.1px;
+        }
+
+        .side-panel::-webkit-scrollbar-thumb {
+            background-color: #525252;
+        }
+
+        .side-panel::-webkit-scrollbar-thumb:hover {
+            background-color: #525252;
+        }
+
+        .side-panel::-webkit-scrollbar-track {
+            background-color: #525252;
+        }
+
+        .side-panel a {
+            padding: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            color: white;
+            display: flex;
+            margin-left: 8px;
+            margin-bottom: 15px;
+        }
+
+        .side-panel a:hover {
+            border: 2px solid whitesmoke;
+        }
+
+        .dashboard-container {
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color: #ffffff;
+            position: fixed;
+            top: 60px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            overflow: hidden;
+            transition: margin-left 0.5s;
+        }
+
+        .side-panel p {
+            font-size: 18px;
+            position: sticky;
+            top: 0;
+            background-color: #525252;
+            padding: 10px;
+            z-index: 1;
+        }
+
+        .info-container {
+           display: flex;
+           justify-content: space-around;
+           flex-wrap: wrap;
+           margin-top: 20px;
+        }
+
+        .info-box {
+            width: calc(33.33% - 20px); /* 4 boxes in 1 line */
+           height: 100px;
+           padding-top: 20px;
+           margin: 10px;
+           text-align: center;
+            border-radius: 10px;
+           box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+           background-color: #3498db; /* Common color for all boxes */
+           color: #fff;
+       }
+/* 6 boxes when side panel is toggled in */
+      @media (max-width: 768px) {
+      .info-box {
+         width: calc(50% - 20px); /*  2 boxes in one line on smaller screens */
+    }
+}
+
+        .info-box i {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar" id="navbar">
+        <span style="font-size: 30px; cursor: pointer; border: 1px solid #ffffff; padding: 5px; float: left; margin-top: 5px; margin-right: 60px;" class="fas fa-bars" onclick="toggleSidePanel()"></span>
+        <a href="/scan_ids">
+            <i class="fas fa-qrcode" style="font-size: 30px; cursor: pointer; border: 1px solid #ffffff; padding: 5px; float: left; margin-top: 5px;"></i>
+        </a>
+    </div>
+    
+   
+    <!--systemtemplates/L_dashboard.html-->
+   
+    <div class="side-panel" id="sidePanel">
+        <p><b>Librarian Dashboard</b></p>
+        <a href="{{ url_for('libprofile') }}"><i class="fas fa-user" style="margin-right: 8px;"></i> My Profile</a>
+        <a href="{{ url_for('L_dashboard') }}"><i class="fas fa-chart-bar" style="margin-right: 8px;"></i> Dashboard</a>
+        <a href="{{ url_for('L_view_subjects') }}"><i class="fas fa-book-open" style="margin-right: 8px;"></i> View Subjects</a>
+        <a href="{{ url_for('L_book_register') }}"><i class="fas fa-book" style="margin-right: 8px;"></i> Register Books</a>
+        <a href="{{ url_for('viewregisteredbooks') }}"><i class="fas fa-book-reader" style="margin-right: 8px;"></i> Registered Books</a>
+        <!-- <a href="/scan_ids"><i class="fas fa-qrcode" style="margin-right: 8px;"></i> Scan the IDs</a> -->
+        <a href="{{ url_for('view_issued_books') }}"><i class="fas fa-eye" style="margin-right: 8px;"></i> Issued Books</a>
+        <a href="{{ url_for('issued_history') }}"><i class="fas fa-history" style="margin-right: 8px;"></i> Returned Books</a>
+        <a href="{{ url_for('view_all_books') }}"><i class="fas fa-book-reader" style="margin-right: 8px;"></i> View All Books</a>
+        <a href="{{ url_for('registered_students_L') }}"><i class="fas fa-users" style="margin-right: 8px;"></i> Registered Students</a>
+        <a href="{{ url_for('sentmessages') }}"><i class="fas fa-envelope" style="margin-right: 8px;"></i> Sent Messages</a>
+        <!-- <a href="{{ url_for('fine') }}"><i class="fas fa-money-bill" style="margin-right: 8px;"></i> Fine Collected</a> -->
+        <a href="{{ url_for('L_view_courses') }}"><i class="fas fa-eye" style="margin-right: 8px;"></i> Courses</a>
+        <a href="{{ url_for('L_view_generated_ids') }}"><i class="fas fa-id-card" style="margin-right: 8px;"></i> Generated IDs</a>
+        <a href="{{ url_for('logout') }}">
+            <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i>
+            Log out
+        </a>
+    </div>
+    
+    
+  
+    
+  
+
+<div class="dashboard-container">
+   
+    <!-- Dashboard Content -->
+    <div class="info-container">
+        {% if courses %}
+            {% for course in courses %}
+                <div class="info-box">
+                    <h2>{{ course['course_name'] }}</h2>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No courses available.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function toggleSidePanel() {
+        var sidePanel = document.getElementById('sidePanel');
+        var navbar = document.getElementById('navbar');
+        var dashboardContainer = document.querySelector('.dashboard-container');
+
+        if (sidePanel.style.width === '200px') {
+            sidePanel.style.width = '0';
+            dashboardContainer.style.marginLeft = '0';
+            navbar.style.left = '0';
+        } else {
+            sidePanel.style.width = '200px';
+            dashboardContainer.style.marginLeft = '200px';
+            navbar.style.left = '200px';
+        }
+    }
+</script>
+
+</body>
+</html>
