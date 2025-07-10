@@ -1,19 +1,3 @@
-# alldashboard.py
-# pip install Flask
-# pip install mysql-connector-python
-# pip install pandas
-# pip install qrcode
-# pip install python-dateutil
-# pip install logging
-# pip install pillow
-# pip install qrcode
-# pip install opencv-python-headless
-# pip install pyzbar
-
-
-
-
-
 
 from flask import Flask, render_template, request, redirect, url_for, flash, session, get_flashed_messages
 import mysql.connector
