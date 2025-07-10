@@ -1,0 +1,11 @@
+Flask
+mysql-connector-python
+pandas
+qrcode
+python-dateutil
+logging
+pillow
+qrcode
+opencv-python-headless
+pyzbar
+openpyxl
