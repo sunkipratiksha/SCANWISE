@@ -20,6 +20,8 @@ import traceback
 from datetime import datetime 
 import json
 
+
+
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
@@ -27,7 +29,7 @@ app.secret_key = 'your_secret_key'
 db_config = {
     'host': '127.0.0.1',
     'user': 'root',
-    'password': 'Advitha@11',   #  'pratiksha@123',
+    'password': 'root', 
     'database': 'scanwise',
     'port': 3306,
 }
@@ -59,8 +61,6 @@ def start():
     return render_template('systemtemplates/start.html')
 
 
-
-# ...
 
 @app.route('/create_main_account', methods=['GET', 'POST'])
 def create_main_account():
@@ -198,9 +198,6 @@ def SA_dashboard():
         close_db_connection(connection, cursor)
 
 
-#--------------------------------------------------------------------------
-
-
 
 # ---------------------------------------------------------------------------------------------------------------
 
@@ -231,7 +228,6 @@ def ASprofile():
 
 
 
-# Initialize 'show_password_column' within a request context
 @app.before_request
 def before_request():
     if 'show_password_column' not in session:
@@ -242,7 +238,6 @@ def before_request():
 # Flask route for toggling password column
 @app.route('/toggle_password_column', methods=['POST'])
 def toggle_password_column():
-    # Your logic to toggle the password column here
     session['show_password_column'] = not session.get('show_password_column', True)
     return redirect(url_for('manage_users'))
 
@@ -297,7 +292,6 @@ def manage_users():
         if db_connection.is_connected():
             db_connection.close()
 
-    # If an exception occurs or the request method is not POST, render the manage_users.html template
     return render_template('systemtemplates/manage_users.html', users=[], show_password_column=session['show_password_column'])
 
 # ---------------------------------------------------------------------------------------------------------------
@@ -368,7 +362,6 @@ def create_user():
             close_db_connection(connection, cursor)
             return redirect(url_for('create_user_page'))
 
-        # Insert the new user into the database with the current timestamp
         insert_query = "INSERT INTO users (role, username, passwd, created) VALUES (%s, %s, %s, %s)"
         insert_data = (role, username, password, datetime.now())
 
@@ -395,7 +388,6 @@ def is_unique(cursor, username, password):
     return count == 0
 
 # ---------------------------------------------------------------------------------------------------------------
-# Route for managing courses
 @app.route('/manage_courses')
 def manage_courses():
     try:
@@ -407,7 +399,6 @@ def manage_courses():
         cursor.execute("SELECT course_name FROM courses")
         courses = [row[0] for row in cursor.fetchall()]
 
-        # Debug: Print retrieved courses
        
 
         # Render the manage_courses.html template and pass the course data
@@ -423,7 +414,6 @@ def manage_courses():
         if db_connection.is_connected():
             db_connection.close()
 
-    # If an exception occurs, render the manage_courses.html template with the flash message
     return render_template('systemtemplates/manage_course.html', courses=[], flash_messages=[])
 
 
@@ -446,7 +436,6 @@ def add_course():
             cursor.execute(insert_query, insert_data)
             db_connection.commit()
 
-            # Redirect to the manage_courses route after adding the course
             flash('Course added successfully.', 'success')
             return redirect(url_for('manage_courses'))
 
@@ -461,7 +450,6 @@ def add_course():
     return redirect(url_for('manage_courses'))
 
 
-# Flask route to delete courses
 @app.route('/delete_course', methods=['POST'])
 def delete_course():
     try:
@@ -533,13 +521,11 @@ def edit_course():
 # ---------------------------------------------------------------------------------------------------------------
 
 
-# Function to create a MySQL connection and cursor
 def get_cursor():
     db_connection = mysql.connector.connect(**db_config)
     return db_connection, db_connection.cursor()
 
 
-# Route for Superadmin login
 @app.route('/SA_creates', methods=['POST'])
 def SA_creates():
     if request.method == 'POST':
@@ -583,7 +569,6 @@ def SA_creates():
                     print("Redirecting to start")
                     return redirect(url_for('start'))
 
-            # Flash an error message if login fails
             flash('Incorrect login credentials. Please try again.', 'danger')
             print("Login failed. Flashing error message.")
 
@@ -642,7 +627,6 @@ def BA_dashboard():
         cursor.execute("SELECT COUNT(*) FROM courses")
         courses_count = cursor.fetchone()[0]
 
-        # Your logic for rendering the BA_dashboardinfo template for GET requests
         return render_template('systemtemplates/BA_dashboardinfo.html', courses_count=courses_count)
 
     except Exception as e:
@@ -812,7 +796,6 @@ def edit_subject():
         # Establish a new connection and cursor
         connection, cursor = get_db_cursor()
 
-        # Update the subject name and code in the database
         update_query = "UPDATE books SET subject = %s, subject_code = %s WHERE subject = %s"
         update_data = (edited_subject_name, edited_subject_code, current_subject_name)
         cursor.execute(update_query, update_data)
@@ -952,7 +935,6 @@ def view_courses():
 
 @app.route('/logout')
 def logout():
-    # Add logic to handle logout if needed
     return render_template('systemtemplates/start.html')
 
 
@@ -1054,7 +1036,7 @@ def upload_excel():
     if 'excel_file' in request.files:
         excel_file = request.files['excel_file']
         if excel_file.filename != '':
-            students.clear()  # Clear the students list when a new file is uploaded
+            students.clear() 
             try:
                 if excel_file.filename.endswith(('.xls', '.xlsx')):
                     # For Excel files using pandas, skip the first row
@@ -1130,21 +1112,12 @@ def generate_id_cards():
 
 
 
-
-
-
-
-from datetime import datetime
-
 def format_scanned_data(student_data):
     # Format student data as per your requirement
     formatted_data = ""
     for key, value in student_data.items():
         formatted_data += f"{key}: {value},\n"
     return formatted_data
-
-
-
 
 
 @app.route('/view_student_ids')
@@ -1201,7 +1174,7 @@ def view_student_ids():
         if connection is not None:
             close_db_connection(connection, cursor)
 #--------------------------------------------------------------------------------------
-import logging
+
 
 # Configure logging
 logging.basicConfig(filename='error.log', level=logging.ERROR)
@@ -1274,7 +1247,6 @@ def upload_to_database():
 
 #------------------------------ROUTE 15---------------------------------
 
-import logging
 
 # Configure logging
 logging.basicConfig(filename='error.log', level=logging.ERROR)
@@ -1797,9 +1769,6 @@ def upload_qr_code_details():
 
 
 
-import cv2
-from pyzbar.pyzbar import decode
-
 
 
 def read_qrcode_from_camera(first_scan=True):
@@ -1838,7 +1807,6 @@ def read_qrcode_from_camera(first_scan=True):
         return None
 
 
-import json
 
 def parse_data(qr_data):
     data = {}
@@ -1866,8 +1834,7 @@ def parse_data(qr_data):
 
     return cleaned_data
 
-import traceback
-from flask import redirect, url_for
+
 
 def insert_scanned_data(book_id, book_data, student_data):
     connection = mysql.connector.connect(**db_config)
