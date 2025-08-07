@@ -14,8 +14,10 @@ import cv2
 from pyzbar.pyzbar import decode
 import time
 from PIL import Image
+import qrcode
 from datetime import datetime, timedelta, date
 import traceback
+from datetime import datetime 
 import json
 
 
@@ -397,13 +399,18 @@ def manage_courses():
         cursor.execute("SELECT course_name FROM courses")
         courses = [row[0] for row in cursor.fetchall()]
 
+       
+
+        # Render the manage_courses.html template and pass the course data
         return render_template('systemtemplates/manage_course.html', courses=courses, flash_messages=get_flashed_messages())
 
     except Exception as e:
+        # Handle exceptions, print or log the error
         
         flash('Error retrieving course data. Please try again.', 'danger')
 
     finally:
+        # Close the MySQL connection
         if db_connection.is_connected():
             db_connection.close()
 
@@ -2640,7 +2647,6 @@ def librarian_dashboard():
     total_fine = cursor.fetchone()[0] or 0
 
     return render_template('systemtemplates/L_dashboard.html', total_books=total_books, books_issued=books_issued, total_fine=total_fine)
-
 
 
 if __name__ == '__main__':
